@@ -1,5 +1,5 @@
-import 'package:ecommerce_admin_tut/provider/app_provider.dart';
-import 'package:ecommerce_admin_tut/provider/tables.dart';
+import 'package:bricko_web/provider/app_provider.dart';
+import 'package:bricko_web/provider/tables.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

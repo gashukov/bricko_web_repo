@@ -1,16 +1,15 @@
-
-import 'package:ecommerce_admin_tut/main.dart';
-import 'package:ecommerce_admin_tut/pages/brands/brands_page.dart';
-import 'package:ecommerce_admin_tut/pages/categories/categories_page.dart';
-import 'package:ecommerce_admin_tut/pages/login/login.dart';
-import 'package:ecommerce_admin_tut/pages/registration/registration.dart';
-import 'package:ecommerce_admin_tut/widgets/layout/layout.dart';
+import 'package:bricko_web/main.dart';
+import 'package:bricko_web/pages/brands/brands_page.dart';
+import 'package:bricko_web/pages/categories/categories_page.dart';
+import 'package:bricko_web/pages/login/login.dart';
+import 'package:bricko_web/pages/registration/registration.dart';
+import 'package:bricko_web/widgets/layout/layout.dart';
 
 import '../pages/home/home_page.dart';
 import '../pages/orders/orders_page.dart';
 import '../pages/products/products_page.dart';
 import '../pages/users/users_page.dart';
-import 'package:ecommerce_admin_tut/rounting/route_names.dart';
+import 'package:bricko_web/routing/route_names.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,13 +27,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(LoginPage());
     case RegistrationRoute:
       return _getPageRoute(RegistrationPage());
-          case LayoutRoute:
+    case LayoutRoute:
       return _getPageRoute(LayoutTemplate());
-                case CategoriesRoute:
+    case CategoriesRoute:
       return _getPageRoute(CategoriesPage());
-                case BrandsRoute:
+    case BrandsRoute:
       return _getPageRoute(BrandsPage());
-                case PageControllerRoute:
+    case PageControllerRoute:
       return _getPageRoute(AppPagesController());
     default:
       return _getPageRoute(LoginPage());

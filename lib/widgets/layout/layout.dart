@@ -1,13 +1,11 @@
-
-import 'package:ecommerce_admin_tut/rounting/route_names.dart';
-import 'package:ecommerce_admin_tut/rounting/router.dart';
-import 'package:ecommerce_admin_tut/services/navigation_service.dart';
-import 'package:ecommerce_admin_tut/widgets/side_menu/side_menu.dart';
+import 'package:bricko_web/routing/route_names.dart';
+import 'package:bricko_web/routing/router.dart';
+import 'package:bricko_web/services/navigation_service.dart';
+import 'package:bricko_web/widgets/side_menu/side_menu.dart';
 import 'package:flutter/material.dart';
 
 import '../../locator.dart';
 import '../navbar/navigation_bar.dart';
-
 
 class LayoutTemplate extends StatelessWidget {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();

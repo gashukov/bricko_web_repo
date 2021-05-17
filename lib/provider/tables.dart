@@ -1,15 +1,15 @@
 import 'dart:math';
 
-import 'package:ecommerce_admin_tut/models/brands.dart';
-import 'package:ecommerce_admin_tut/models/categories.dart';
-import 'package:ecommerce_admin_tut/models/orders.dart';
-import 'package:ecommerce_admin_tut/models/products.dart';
-import 'package:ecommerce_admin_tut/models/user.dart';
-import 'package:ecommerce_admin_tut/services/brands.dart';
-import 'package:ecommerce_admin_tut/services/categories.dart';
-import 'package:ecommerce_admin_tut/services/orders.dart';
-import 'package:ecommerce_admin_tut/services/products.dart';
-import 'package:ecommerce_admin_tut/services/user.dart';
+import 'package:bricko_web/models/brands.dart';
+import 'package:bricko_web/models/categories.dart';
+import 'package:bricko_web/models/orders.dart';
+import 'package:bricko_web/models/products.dart';
+import 'package:bricko_web/models/user.dart';
+import 'package:bricko_web/services/brands.dart';
+import 'package:bricko_web/services/categories.dart';
+import 'package:bricko_web/services/orders.dart';
+import 'package:bricko_web/services/products.dart';
+import 'package:bricko_web/services/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_table/DatatableHeader.dart';
@@ -236,8 +236,8 @@ class TablesProvider with ChangeNotifier {
     List<Map<String, dynamic>> temps = List<Map<String, dynamic>>();
     for (BrandModel brand in _brands) {
       temps.add({
-        "id": brand.id,
-        "brand": brand.brand,
+        "titleEn": brand.titleEn,
+        "titleRu": brand.titleRu,
       });
     }
     return temps;
@@ -248,8 +248,8 @@ class TablesProvider with ChangeNotifier {
 
     for (CategoriesModel category in _categories) {
       temps.add({
-        "id": category.id,
-        "category": category.category,
+        "titleEn": category.titleEn,
+        "titleRu": category.titleRu,
       });
     }
     return temps;
@@ -274,16 +274,17 @@ class TablesProvider with ChangeNotifier {
     List<Map<String, dynamic>> temps = List<Map<String, dynamic>>();
     for (ProductModel product in _products) {
       temps.add({
-        "id": product.id,
-        "name": product.name,
-        "brand": product.brand,
-        "category": product.category,
-        "quantity": product.quantity,
-        "sale": product.sale,
-        "featured": product.featured,
-        "colors": product.colors,
-        "sizes": product.sizes,
-        "price": "\$${product.price}",
+        "active": product.active,
+        "pSet": product.pSet,
+        "titleEn": product.titleEn,
+        "titleRu": product.titleRu,
+        "descriptionEn": product.descriptionEn,
+        "descriptionRu": product.descriptionRu,
+        "priceType": product.priceType,
+        "iapID": product.iapID,
+        "adsPrice": product.adsPrice,
+        "categories": product.categories,
+        "screensCount": product.screensCount,
       });
     }
     return temps;

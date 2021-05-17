@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_admin_tut/helpers/costants.dart';
-import 'package:ecommerce_admin_tut/models/user.dart';
+import 'package:bricko_web/helpers/constants.dart';
+import 'package:bricko_web/models/user.dart';
 
 class UserServices {
   String adminsCollection = "admins";

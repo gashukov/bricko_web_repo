@@ -1,6 +1,6 @@
-import 'package:ecommerce_admin_tut/helpers/enumerators.dart';
-import 'package:ecommerce_admin_tut/models/orders.dart';
-import 'package:ecommerce_admin_tut/services/orders.dart';
+import 'package:bricko_web/helpers/enumerators.dart';
+import 'package:bricko_web/models/orders.dart';
+import 'package:bricko_web/services/orders.dart';
 import 'package:flutter/material.dart';
 
 class AppProvider with ChangeNotifier {

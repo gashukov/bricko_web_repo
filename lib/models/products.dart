@@ -1,68 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
-  static const ID = "id";
-  static const NAME = "name";
-  static const PICTURE = "picture";
-  static const PRICE = "price";
-  static const DESCRIPTION = "description";
-  static const CATEGORY = "category";
-  static const FEATURED = "featured";
-  static const QUANTITY = "quantity";
-  static const BRAND = "brand";
-  static const SALE = "sale";
-  static const SIZES = "sizes";
-  static const COLORS = "colors";
+  static const ACTIVE = "productActive";
+  static const SET = "productSet";
+  static const TITLE_EN = "productTitle_en";
+  static const TITLE_RU = "productTitle_ru";
+  static const DESCRIPTION_EN = "productDescription_en";
+  static const DESCRIPTION_RU = "productDescription_ru";
+  static const PRICE_TYPE = "productPriceType";
+  static const IAPID = "iapID";
+  static const ADS_PRICE = "productAdsPrice";
+  static const CATEGORIES = "categories";
+  static const SCREENS_COUNT = "productScreensCount";
 
-  String _id;
-  String _name;
-  String _picture;
-  String _description;
-  String _category;
-  String _brand;
-  int _quantity;
-  int _price;
-  bool _sale;
-  bool _featured;
-  List _colors;
-  List _sizes;
+  bool _active;
+  String _pSet;
+  String _titleEn;
+  String _titleRu;
+  String _descriptionEn;
+  String _descriptionRu;
+  String _priceType;
+  String _iapID;
+  int _adsPrice;
+  List<dynamic> _categories;
+  int _screensCount;
 
-  String get id => _id;
-
-  String get name => _name;
-
-  String get picture => _picture;
-
-  String get brand => _brand;
-
-  String get category => _category;
-
-  String get description => _description;
-
-  int get quantity => _quantity;
-
-  int get price => _price;
-
-  bool get featured => _featured;
-
-  bool get sale => _sale;
-
-  List get colors => _colors;
-
-  List get sizes => _sizes;
+  get active => this._active;
+  get pSet => this._pSet;
+  get titleEn => this._titleEn;
+  get titleRu => this._titleRu;
+  get descriptionEn => this._descriptionEn;
+  get descriptionRu => this._descriptionRu;
+  get priceType => this._priceType;
+  get iapID => this._iapID;
+  get adsPrice => this._adsPrice;
+  get categories => this._categories;
+  get screensCount => this._screensCount;
 
   ProductModel.fromSnapshot(DocumentSnapshot snapshot) {
-    _id = snapshot.data()[ID];
-    _brand = snapshot.data()[BRAND];
-    _sale = snapshot.data()[SALE];
-    _description = snapshot.data()[DESCRIPTION] ?? " ";
-    _featured = snapshot.data()[FEATURED];
-    _price = snapshot.data()[PRICE].floor();
-    _category = snapshot.data()[CATEGORY];
-    _colors = snapshot.data()[COLORS];
-    _sizes = snapshot.data()[SIZES];
-    _name = snapshot.data()[NAME];
-    _picture = snapshot.data()[PICTURE];
-    _quantity = snapshot.data()[QUANTITY];
+    _active = snapshot.data()[ACTIVE];
+    _pSet = snapshot.data()[SET];
+    _titleEn = snapshot.data()[TITLE_EN];
+    _titleRu = snapshot.data()[TITLE_RU];
+    _descriptionEn = snapshot.data()[DESCRIPTION_EN];
+    _descriptionRu = snapshot.data()[DESCRIPTION_RU];
+    _priceType = snapshot.data()[PRICE_TYPE];
+    _iapID = snapshot.data()[IAPID];
+    _adsPrice = snapshot.data()[ADS_PRICE];
+    _categories = snapshot.data()[CATEGORIES];
+    _screensCount = snapshot.data()[SCREENS_COUNT];
   }
 }

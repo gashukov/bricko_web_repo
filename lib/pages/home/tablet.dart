@@ -1,8 +1,8 @@
-import 'package:ecommerce_admin_tut/widgets/cards/card_item.dart';
-import 'package:ecommerce_admin_tut/widgets/custom_text.dart';
-import 'package:ecommerce_admin_tut/widgets/page_header.dart';
-import 'package:ecommerce_admin_tut/widgets/charts/sales_chart.dart';
-import 'package:ecommerce_admin_tut/widgets/top_buyer.dart';
+import 'package:bricko_web/widgets/cards/card_item.dart';
+import 'package:bricko_web/widgets/custom_text.dart';
+import 'package:bricko_web/widgets/page_header.dart';
+import 'package:bricko_web/widgets/charts/sales_chart.dart';
+import 'package:bricko_web/widgets/top_buyer.dart';
 import 'package:flutter/material.dart';
 
 class HomePageTablet extends StatelessWidget {
@@ -10,7 +10,9 @@ class HomePageTablet extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        PageHeader(text: 'DASHBOARD',),
+        PageHeader(
+          text: 'DASHBOARD',
+        ),
         Padding(
           padding: const EdgeInsets.all(14),
           child: CardItem(
@@ -50,14 +52,12 @@ class HomePageTablet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                  height: MediaQuery.of(context).size.height ,
-                                   width: MediaQuery.of(context).size.width / 1.19,
-
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width / 1.19,
                   child: SalesChart()),
             ],
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.all(14),
           child: Row(
@@ -69,17 +69,18 @@ class HomePageTablet extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-
                     boxShadow: [
                       BoxShadow(
                           color: Colors.grey[300],
                           offset: Offset(0, 3),
-                          blurRadius: 16
-                      )
+                          blurRadius: 16)
                     ]),
                 child: Column(
                   children: [
-                    CustomText(text: 'Top Buyers', size: 30,),
+                    CustomText(
+                      text: 'Top Buyers',
+                      size: 30,
+                    ),
                     TopBuyerWidget(),
                     TopBuyerWidget(),
                     TopBuyerWidget(),
@@ -94,7 +95,6 @@ class HomePageTablet extends StatelessWidget {
             ],
           ),
         )
-
       ],
     );
   }

@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:ecommerce_admin_tut/provider/tables.dart';
-import 'package:ecommerce_admin_tut/widgets/page_header.dart';
+import 'package:bricko_web/provider/tables.dart';
+import 'package:bricko_web/widgets/page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_table/ResponsiveDatatable.dart';
