@@ -40,6 +40,32 @@
       });
     }
   </script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBAuoZ35smMJ6MEuVdIG3sXuOamtEu7Bpc",
+    authDomain: "bricko.firebaseapp.com",
+    databaseURL: "https://bricko.firebaseio.com",
+    projectId: "bricko",
+    storageBucket: "bricko.appspot.com",
+    messagingSenderId: "380533938939",
+    appId: "1:380533938939:web:03fb695d26c9ee49e0ee5e"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
