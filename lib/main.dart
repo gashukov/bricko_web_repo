@@ -1,85 +1,69 @@
-import 'package:bricko_web/pages/login/login.dart';
-import 'package:bricko_web/routing/route_names.dart';
-import 'package:bricko_web/routing/router.dart';
-import 'package:bricko_web/widgets/layout/layout.dart';
-import 'package:bricko_web/widgets/loading.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:bricko_web/provider/app_provider.dart';
-import 'package:bricko_web/provider/auth.dart';
-import 'package:bricko_web/provider/tables.dart';
+import 'app.dart';
+import 'state_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'utils/file_storage.dart';
+import 'utils/data_storage.dart';
+import 'models/product_data.dart';
 
-import 'package:bricko_web/helpers/constants.dart';
-import 'locator.dart';
+FilesStorage fileStorage;
+DataStorage dataStorage;
+// PurchaseManager purchaseManager;
+final Future<FirebaseApp> initialization = Firebase.initializeApp();
+
+FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
+
+bool rememberMe = true;
+String rememberMePref = "remember_me";
+bool logOut = false;
+String logOutPref = "log_out";
+
+Map<String, int> viewsRemains;
+List<String> owned;
+List<String> downloadedOnce;
+ProductData unlockableProduct;
+// List<ProductDetails> iapProducts;
 
 void main() {
-  setupLocator();
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider.value(value: AppProvider.init()),
-    ChangeNotifierProvider.value(value: AuthProvider.initialize()),
-    ChangeNotifierProvider.value(value: TablesProvider.init()),
-  ], child: MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  fileStorage = new FilesStorage();
+  fileStorage.init();
+  dataStorage = new DataStorage();
+  dataStorage.init();
+  // purchaseManager = new PurchaseManager();
+
+  initApp();
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      onGenerateRoute: generateRoute,
-      initialRoute: PageControllerRoute,
-    );
-  }
+initApp() {
+  StateWidget stateWidget =
+      new StateWidget(child: new BricksBuildInstructionsApp());
+  runApp(stateWidget);
 }
 
-class AppPagesController extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(context);
-
-    return FutureBuilder(
-      // Initialize FlutterFire:
-      future: initialization,
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          return Scaffold(
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text("Something went wrong")],
-            ),
-          );
-        }
-
-        // Once complete, show your application
-        if (snapshot.connectionState == ConnectionState.done) {
-          print("authProvider status on app start " + authProvider.status.toString());
-          switch (authProvider.status) {
-            case Status.Uninitialized:
-              return Loading();
-            case Status.Unauthenticated:
-            case Status.Authenticating:
-              return LoginPage();
-            case Status.Authenticated:
-              return LayoutTemplate();
-            default:
-              return LoginPage();
-          }
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        return Scaffold(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [CircularProgressIndicator()],
-          ),
-        );
-      },
-    );
-  }
-}
+//class Utils {
+//
+//  static List<Future> getInitializers() {
+//    List<Future> result = new List();
+//    result.add(getIconsNames());
+//
+//    return result;
+//  }
+//
+//  static Future getIconsNames() async{
+//    Firestore firestore = Firestore.instance;
+//
+//    List<DocumentSnapshot> docs;
+//    firestore.collection("instructions").getDocuments().then((snap) {
+//      docs = snap.documents;
+//      docs.forEach((d) {
+//        print(d.data["icon_name"]);
+//      });
+//    });
+//  }
+//
+//}
