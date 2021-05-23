@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'app.dart';
 import 'state_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,22 +29,27 @@ List<String> downloadedOnce;
 ProductData unlockableProduct;
 // List<ProductDetails> iapProducts;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   fileStorage = new FilesStorage();
   fileStorage.init();
   dataStorage = new DataStorage();
   dataStorage.init();
+
+  await initialization;
   // purchaseManager = new PurchaseManager();
 
   initApp();
 }
 
-initApp() {
+initApp() async {
+  var delegate = await LocalizationDelegate.create(
+      fallbackLocale: 'en', supportedLocales: ['en', 'ru']);
+
   StateWidget stateWidget =
       new StateWidget(child: new BricksBuildInstructionsApp());
-  runApp(stateWidget);
+  runApp(LocalizedApp(delegate, stateWidget));
 }
 
 //class Utils {
@@ -59,7 +66,7 @@ initApp() {
 //
 //    List<DocumentSnapshot> docs;
 //    firestore.collection("instructions").getDocuments().then((snap) {
-//      docs = snap.documents;
+//      docs = snap.docs;
 //      docs.forEach((d) {
 //        print(d.data["icon_name"]);
 //      });

@@ -6,14 +6,11 @@ import 'package:bricko_web/main.dart';
 import 'package:bricko_web/utils/app_data.dart';
 import 'package:bricko_web/utils/help_functions.dart';
 import 'package:bricko_web/models/product_data.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:bricko_web/componets/products_page.dart';
 
 class CategoryChips extends StatelessWidget {
-
   String set;
   String oldTitle;
-
 
   CategoryChips(this.oldTitle, this.set);
 
@@ -22,28 +19,23 @@ class CategoryChips extends StatelessWidget {
     /// category chips
     return StreamBuilder(
         stream: firebaseFirestore.collection(categoriesRoot).snapshots(),
-        builder: (context, snapshot){
-          if(!snapshot.hasData) {
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
             return new Center(
                 child: Container(
-                  height: 60,
-                )
-            );
+              height: 60,
+            ));
           } else {
-            final int dataCount = snapshot.data.documents.length;
+            final int dataCount = snapshot.data.docs.length;
 //            print("data count $dataCount");
-            if(dataCount == 0) {
-
+            if (dataCount == 0) {
               return new Center(
                   child: Container(
-                    height: 60,
-                  )
-              );
-
+                height: 60,
+              ));
             } else {
-              List<DocumentSnapshot> c = snapshot.data.documents;
+              List<DocumentSnapshot> c = snapshot.data.docs;
               c.forEach((f) => print("category loaded " + f.id));
-
 
               return Container(
                 height: 60,
@@ -51,7 +43,7 @@ class CategoryChips extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: dataCount,
                   itemBuilder: (BuildContext context, int index) {
-                    String title = snapshot.data.documents[index][FlutterI18n.currentLocale(context).languageCode == "ru" ? "title_ru" : "title_en"];
+                    String title = snapshot.data.docs[index]["title_en"];
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ActionChip(
@@ -59,10 +51,16 @@ class CategoryChips extends StatelessWidget {
                         backgroundColor: Colors.white,
                         elevation: 4.0,
                         onPressed: () {
-//                          setCategory((snapshot.data.documents[index] as DocumentSnapshot).documentID);
+//                          setCategory((snapshot.data.docs[index] as DocumentSnapshot).documentID);
 
                           Navigator.of(context).push(new MaterialPageRoute(
-                              builder: (BuildContext context) => new ProductsPage(oldTitle + " " + title, set, (snapshot.data.documents[index] as DocumentSnapshot).id)));
+                              builder: (BuildContext context) =>
+                                  new ProductsPage(
+                                      oldTitle + " " + title,
+                                      set,
+                                      (snapshot.data.docs[index]
+                                              as DocumentSnapshot)
+                                          .id)));
                         },
                         label: Text(title),
                       ),
@@ -72,8 +70,6 @@ class CategoryChips extends StatelessWidget {
               );
             }
           }
-        }
-    );
+        });
   }
-
 }

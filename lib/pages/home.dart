@@ -8,10 +8,10 @@ import 'package:bricko_web/models/state.dart';
 import 'package:bricko_web/state_widget.dart';
 import 'package:bricko_web/main.dart';
 import 'package:bricko_web/utils/app_data.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bricko_web/componets/category_chips.dart';
 import 'package:bricko_web/componets/sets_chips.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   StateModel appState;
 
   Widget _buildContent() {
@@ -28,10 +27,12 @@ class _HomePageState extends State<HomePage> {
       return _buildMainView(
         body: _buildLoadingIndicator(Colors.red.shade900),
       );
-    } else if (!appState.isLoading && appState.user == null) {
-      print("билдим логин паге");
-      return new LoginPage();
-    } else {
+    }
+    // else if (!appState.isLoading && appState.user == null) {
+    //   print("билдим логин паге");
+    //   return new LoginPage();
+    // }
+    else {
       print("билдим хоум паге");
       return _buildMainContent();
     }
@@ -41,29 +42,27 @@ class _HomePageState extends State<HomePage> {
   // индикатор загрузки
   Center _buildLoadingIndicator(Color color) {
     return Center(
-      child: new CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(color),
-      )
-    );
+        child: new CircularProgressIndicator(
+      valueColor: new AlwaysStoppedAnimation<Color>(color),
+    ));
   }
 
   // основной таб
   Scaffold _buildMainView({Widget body}) {
     return Scaffold(
-        appBar: PreferredSize(
-          // We set Size equal to passed height (50.0) and infinite width:
-          preferredSize: Size.fromHeight(50.0),
-          child: AppBar(
-            elevation: 2.0,
-          ),
+      appBar: PreferredSize(
+        // We set Size equal to passed height (50.0) and infinite width:
+        preferredSize: Size.fromHeight(50.0),
+        child: AppBar(
+          elevation: 2.0,
         ),
-        body: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: body,
-        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(5.0),
+        child: body,
+      ),
     );
   }
-
 
 //   Widget _buildImageCorousel() {
 //     return new Container(
@@ -92,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       appBar: new AppBar(
         elevation: 0.1,
         backgroundColor: Colors.red.shade900,
-        title: Text(FlutterI18n.translate(context, "home_title")),
+        title: Text(translate("home_title")),
 //        actions: <Widget>[
 //          new IconButton(
 //              icon: Icon(
@@ -113,25 +112,28 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
 //            header
             new UserAccountsDrawerHeader(
-              accountName: appState.user != null ?  Text(appState.user.displayName) : Text("User"),
-              accountEmail: appState.user != null ?  Text(appState.user.email) : Text("user@email.com"),
+              accountName: appState.user != null
+                  ? Text(appState.user.displayName)
+                  : Text("User"),
+              accountEmail: appState.user != null
+                  ? Text(appState.user.email)
+                  : Text("user@email.com"),
               currentAccountPicture: GestureDetector(
                 child: new CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    backgroundImage: appState.user != null ? NetworkImage(appState.user.photoURL) : null,
+                  backgroundColor: Colors.grey,
+                  backgroundImage: appState.user != null
+                      ? NetworkImage(appState.user.photoURL)
+                      : null,
                 ),
               ),
-              decoration: new BoxDecoration(
-                  color: Colors.red.shade900
-              ),
+              decoration: new BoxDecoration(color: Colors.red.shade900),
             ),
 
 //            body
 
             InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.of(context).pop();
-
               },
               child: ListTile(
                 title: Text('Главная'),
@@ -187,15 +189,16 @@ class _HomePageState extends State<HomePage> {
 //                });
               },
               child: ListTile(
-                title: Text(FlutterI18n.translate(context, "logout")),
-                leading: Icon(Icons.transit_enterexit, color: Colors.grey,),
+                title: Text(translate("logout")),
+                leading: Icon(
+                  Icons.transit_enterexit,
+                  color: Colors.grey,
+                ),
               ),
             ),
-
           ],
         ),
       ),
-
       body: new Column(
         children: <Widget>[
           //image carousel begins here
@@ -221,7 +224,6 @@ class _HomePageState extends State<HomePage> {
           new SetsChips(),
 
           Flexible(child: Products(null, null)),
-
         ],
       ),
     );

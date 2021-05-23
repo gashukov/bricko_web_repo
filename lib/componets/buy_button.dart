@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:bricko_web/models/product_data.dart';
 import 'package:bricko_web/utils/app_data.dart';
 import 'dart:async';
 import 'package:bricko_web/main.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'instructions_viewer.dart';
 import 'package:bricko_web/state_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -161,7 +161,7 @@ class _BuyButtonBarState extends State<BuyButtonBar> {
 //         tryTimes = 12;
 //         tryToLoadAfterDelay();
 //       }
-//       Fluttertoast.showToast(msg: FlutterI18n.translate(context, "video_not_loaded"), toastLength: Toast.LENGTH_LONG, backgroundColor: Colors.black87, textColor: Colors.white);
+//       Fluttertoast.showToast(msg: translate("video_not_loaded"), toastLength: Toast.LENGTH_LONG, backgroundColor: Colors.black87, textColor: Colors.white);
 //     });
 
 // //    print("uid" + StateWidget.of(context).state.user.uid);
@@ -194,7 +194,7 @@ class _BuyButtonBarState extends State<BuyButtonBar> {
 
 //             if(_wasRewarded) {
 //               StateWidget.priceController.sink.add("update");
-//               Fluttertoast.showToast(msg: FlutterI18n.translate(context, "thx_for_watching"), toastLength: Toast.LENGTH_LONG, backgroundColor: Colors.black87, textColor: Colors.white);
+//               Fluttertoast.showToast(msg: translate("thx_for_watching"), toastLength: Toast.LENGTH_LONG, backgroundColor: Colors.black87, textColor: Colors.white);
 
 //               if(viewsRemains[unlockableProduct.pID] <= 0) {
 // //                changeButtonState();
@@ -316,7 +316,7 @@ class _BuyButtonBarState extends State<BuyButtonBar> {
                 width: 4.0,
               ),
               Text(
-                FlutterI18n.translate(context, "remove"),
+                translate("remove"),
                 style: TextStyle(color: Colors.white),
               ),
             ],
@@ -336,7 +336,7 @@ class _BuyButtonBarState extends State<BuyButtonBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                FlutterI18n.translate(context, "loading"),
+                translate("loading"),
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(
@@ -350,9 +350,9 @@ class _BuyButtonBarState extends State<BuyButtonBar> {
     } else {
       return new RaisedButton(
         onPressed: () async {
-          _succesMsg = FlutterI18n.translate(context, "archive_load_success") +
+          _succesMsg = translate("archive_load_success") +
               _productData.getActualTitle(context);
-          _errorMsg = FlutterI18n.translate(context, "archive_load_error") +
+          _errorMsg = translate("archive_load_error") +
               _productData.getActualTitle(context);
 
           _blockButton(true);
@@ -373,7 +373,7 @@ class _BuyButtonBarState extends State<BuyButtonBar> {
                 width: 4.0,
               ),
               Text(
-                FlutterI18n.translate(context, _buttonText),
+                translate(_buttonText),
                 style: TextStyle(color: Colors.white),
               ),
             ],

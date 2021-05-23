@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:bricko_web/utils/app_data.dart';
 import 'package:bricko_web/main.dart';
-import 'package:bricko_web/componets/instructions_viewer.dart';
-import 'package:bricko_web/componets/buy_button.dart';
-import 'package:bricko_web/pages/product_details.dart';
-import 'dart:async';
+
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ProductData {
   String pID;
@@ -23,8 +20,18 @@ class ProductData {
   String pSet;
   String pIapID;
 
-
-  ProductData(String pID, String pPriceType, int pAdsPrice, String pTitleEN, String pTitleRU, String pDescriptionEN, String pDescriptionRU, int productScreensCount, List<dynamic> pCategories, String pSet, String pIapID) {
+  ProductData(
+      String pID,
+      String pPriceType,
+      int pAdsPrice,
+      String pTitleEN,
+      String pTitleRU,
+      String pDescriptionEN,
+      String pDescriptionRU,
+      int productScreensCount,
+      List<dynamic> pCategories,
+      String pSet,
+      String pIapID) {
     this.pID = pID;
     this.pPriceType = pPriceType;
     this.pAdsPrice = pAdsPrice;
@@ -39,7 +46,7 @@ class ProductData {
   }
 
   String getActualTitle(BuildContext context) {
-    switch(FlutterI18n.currentLocale(context).languageCode) {
+    switch (LocalizedApp.of(context).delegate.currentLocale.languageCode) {
       case "ru":
         return pTitleRU;
         break;
@@ -50,7 +57,7 @@ class ProductData {
   }
 
   String getActualDescription(BuildContext context) {
-    switch(FlutterI18n.currentLocale(context).languageCode) {
+    switch (LocalizedApp.of(context).delegate.currentLocale.languageCode) {
       case "ru":
         return pDescriptionRU;
         break;
@@ -61,7 +68,7 @@ class ProductData {
   }
 
   String getActualSet(BuildContext context) {
-    switch(FlutterI18n.currentLocale(context).languageCode) {
+    switch (LocalizedApp.of(context).delegate.currentLocale.languageCode) {
       case "ru":
         return pDescriptionRU;
         break;
@@ -74,26 +81,27 @@ class ProductData {
   ButtonBuyState getActualButtonState() {
     switch (pPriceType) {
       case priceTypeFree:
-        if(!fileStorage.isArchiveExists(pID)) {
+        if (!fileStorage.isArchiveExists(pID)) {
           return ButtonBuyState.DOWNLOAD;
         } else {
           return ButtonBuyState.OPEN;
         }
         break;
       case priceTypePaid:
-        if(!owned.contains(pID) && !downloadedOnce.contains(pID)) {
+        if (!owned.contains(pID) && !downloadedOnce.contains(pID)) {
           return ButtonBuyState.BUY;
-        } else if(!fileStorage.isArchiveExists(pID)) {
+        } else if (!fileStorage.isArchiveExists(pID)) {
           return ButtonBuyState.DOWNLOAD;
         } else {
           return ButtonBuyState.OPEN;
         }
         break;
       case priceTypeAds:
-        if((!viewsRemains.containsKey(pID) || viewsRemains[pID] != 0) && !downloadedOnce.contains(pID)) {
+        if ((!viewsRemains.containsKey(pID) || viewsRemains[pID] != 0) &&
+            !downloadedOnce.contains(pID)) {
           return ButtonBuyState.UNLOCK;
         } else {
-          if(!fileStorage.isArchiveExists(pID)) {
+          if (!fileStorage.isArchiveExists(pID)) {
             return ButtonBuyState.DOWNLOAD;
           } else {
             return ButtonBuyState.OPEN;
@@ -104,9 +112,7 @@ class ProductData {
   }
 
   IconData getBuyIcon() {
-
-    switch(getActualButtonState()) {
-
+    switch (getActualButtonState()) {
       case ButtonBuyState.OPEN:
         return Icons.remove_red_eye;
         break;
@@ -123,9 +129,7 @@ class ProductData {
   }
 
   String getBuyText() {
-
-    switch(getActualButtonState()) {
-
+    switch (getActualButtonState()) {
       case ButtonBuyState.OPEN:
         return "open";
         break;
@@ -139,13 +143,10 @@ class ProductData {
         return "buy";
         break;
     }
-
   }
 
   Color getBuyColor() {
-
-    switch(getActualButtonState()) {
-
+    switch (getActualButtonState()) {
       case ButtonBuyState.OPEN:
         return Colors.green.shade900;
         break;
@@ -160,7 +161,4 @@ class ProductData {
         break;
     }
   }
-
-
-
 }

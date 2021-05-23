@@ -1,5 +1,6 @@
 import 'package:bricko_web/state_widget.dart';
 import 'package:firebase_image/firebase_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bricko_web/pages/product_details.dart';
@@ -9,8 +10,9 @@ import 'package:bricko_web/utils/app_data.dart';
 import 'package:bricko_web/utils/help_functions.dart';
 import 'package:bricko_web/models/product_data.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:bricko_web/utils/firebase_storage_image.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -26,94 +28,86 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder(
-        stream: firebaseFirestore.collection(productsRoot).snapshots(),
+        stream: FirebaseFirestore.instance.collection(productsRoot).snapshots(),
         builder: (context, snapshot) {
-          return new StreamBuilder(
-              stream: firebaseFirestore
-                  .collection(usersRoot)
-                  .doc(StateWidget.of(context).state.user.uid)
-                  .snapshots(),
-              builder: (context, snapshotuser) {
-                if (!snapshot.hasData || !snapshotuser.hasData) {
-                  return new Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor),
+          if (!snapshot.hasData) {
+            return new Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor),
+              ),
+            );
+          } else {
+            // List<String> localOwned = snapshotuser.data["owned"] == null ? null : List.from(snapshotuser.data["owned"]);
+            // if(localOwned != null) {
+            //   localOwned.forEach((e) => print("LOCAL OWNED ${e}"));
+            // }
+
+            List<DocumentSnapshot> productList = snapshot.data.docs;
+
+            print("CHECK OWNED");
+            // todo заменить на локальную проверку
+            // productList.removeWhere((DocumentSnapshot d) => !(d[productActive] || localOwned != null && localOwned.contains(d.id.replaceAll(" ", ""))));
+            productList.removeWhere((DocumentSnapshot d) => !d[productActive]);
+            if (widget.set != null) {
+              productList = productList
+                  .where((DocumentSnapshot d) =>
+                      d[productSet].toString() == widget.set)
+                  .toList();
+            }
+            if (widget.category != null) {
+              productList = productList
+                  .where((DocumentSnapshot d) =>
+                      (d[productCategories] as List<dynamic>)
+                          .contains(widget.category))
+                  .toList();
+            }
+
+            if (productList.length == 0) {
+              return new Center(
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Icon(
+                      Icons.find_in_page,
+                      color: Colors.black45,
+                      size: 80.0,
                     ),
-                  );
-                } else {
-                  List<String> localOwned = snapshotuser.data["owned"] == null
-                      ? null
-                      : List.from(snapshotuser.data["owned"]);
-                  if (localOwned != null) {
-                    localOwned.forEach((e) => print("LOCAL OWNED ${e}"));
-                  }
-
-                  List<DocumentSnapshot> productList = snapshot.data.documents;
-                  print("CHECK OWNED");
-                  productList.removeWhere((DocumentSnapshot d) =>
-                      !(d[productActive] ||
-                          localOwned != null &&
-                              localOwned.contains(d.id.replaceAll(" ", ""))));
-                  if (widget.set != null) {
-                    productList = productList
-                        .where((DocumentSnapshot d) =>
-                            d[productSet].toString() == widget.set)
-                        .toList();
-                  }
-                  if (widget.category != null) {
-                    productList = productList
-                        .where((DocumentSnapshot d) =>
-                            (d[productCategories] as List<dynamic>)
-                                .contains(widget.category))
-                        .toList();
-                  }
-
-                  if (productList.length == 0) {
-                    return new Center(
-                      child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Icon(
-                            Icons.find_in_page,
-                            color: Colors.black45,
-                            size: 80.0,
-                          ),
-                          new Text(
-                            FlutterI18n.translate(context, "no_instructions"),
-                            style: new TextStyle(
-                              color: Colors.black45,
-                              fontSize: 20,
-                            ),
-                          )
-                        ],
+                    new Text(
+                      translate("no_instructions"),
+                      style: new TextStyle(
+                        color: Colors.black45,
+                        fontSize: 20,
                       ),
-                    );
-                  } else {
-                    return new StaggeredGridView.countBuilder(
-                        crossAxisCount: 2,
-                        itemCount: productList.length,
-                        staggeredTileBuilder: (int index) =>
-                            new StaggeredTile.count(1, 1.24),
-                        mainAxisSpacing: 4.0,
-                        crossAxisSpacing: 4.0,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SingleProduct(new ProductData(
-                              productList[index].id.replaceAll(" ", ""),
-                              productList[index][productPriceType],
-                              productList[index][productAdsPrice],
-                              productList[index][productTitleEN],
-                              productList[index][productTitleRU],
-                              productList[index][productDescriptionEN],
-                              productList[index][productDescriptionRU],
-                              productList[index][productScreensCount],
-                              productList[index][productCategories],
-                              productList[index][productSet],
-                              productList[index][productIAPID]));
-                        });
-                  }
-                }
-              });
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return new StaggeredGridView.countBuilder(
+                  crossAxisCount: 6,
+                  itemCount: productList.length,
+                  staggeredTileBuilder: (int index) =>
+                      new StaggeredTile.count(1, 1.24),
+                  mainAxisSpacing: 12.0,
+                  crossAxisSpacing: 12.0,
+                  itemBuilder: (BuildContext context, int index) {
+                    print("билдим " + productList[index].id);
+                    return SingleProduct(new ProductData(
+                        productList[index].id.replaceAll(" ", ""),
+                        productList[index].data()[productPriceType],
+                        productList[index].data()[productAdsPrice],
+                        productList[index].data()[productTitleEN],
+                        productList[index].data()[productTitleRU],
+                        productList[index].data()[productDescriptionEN],
+                        productList[index].data()[productDescriptionRU],
+                        productList[index].data()[productScreensCount],
+                        productList[index].data()[productCategories],
+                        productList[index].data()[productSet],
+                        productList[index].data()[productIAPID]));
+                  });
+            }
+          }
         });
 
 //    return new StreamBuilder(
@@ -124,7 +118,7 @@ class _ProductsState extends State<Products> {
 //              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),),
 //            );
 //          } else {
-//            List<DocumentSnapshot> productList = snapshot.data.documents;
+//            List<DocumentSnapshot> productList = snapshot.data.docs;
 //            print("CHECK OWNED");
 //            productList.removeWhere((DocumentSnapshot d) => !(d[productActive] || owned.contains(d.documentID.replaceAll(" ", ""))));
 //            if (widget.set != null) {
@@ -230,21 +224,28 @@ class _SingleProductState extends State<SingleProduct> {
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
+                  // child: Image(
+                  //   image: FirebaseStorageImage(
+                  //       'gs://bricko.appspot.com' +
+                  //           getIconPathByPID(widget.productData.pID),
+                  //       scale: 1,
+                  //       firebaseApp: firebaseFirestore.app),
+                  //   width: double.maxFinite,
+                  //   fit: BoxFit.fitWidth,
+                  // ),
                   child: Image(
                     image: FirebaseImage(
                       'gs://bricko.appspot.com' +
                           getIconPathByPID(widget.productData.pID),
-                      cacheRefreshStrategy: CacheRefreshStrategy.NEVER,
-                      shouldCache: true,
+                      shouldCache: false,
                       firebaseApp: FirebaseFirestore.instance.app,
                     ),
                     width: double.maxFinite,
                     fit: BoxFit.fitWidth,
                   ),
-//                child: Image.asset(
-//                  "images/logo.png",
-//
-//                ),
+                  // child: Image.asset(
+                  //   "images/logo.png",
+                  // ),
                 ),
               ),
               Align(
@@ -268,9 +269,7 @@ class _SingleProductState extends State<SingleProduct> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 2, 8, 4),
                   child: Text(
-                    _price != null
-                        ? _price
-                        : FlutterI18n.translate(context, "loading_3dots"),
+                    _price != null ? _price : translate("loading_3dots"),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     softWrap: false,

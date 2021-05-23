@@ -61,7 +61,7 @@ class _StateWidgetState extends State<StateWidget> {
   //   List<String> ids = new List();
 
   //   QuerySnapshot qs = await firestore.collection(productsRoot).getDocuments();
-  //   for(DocumentSnapshot ds in qs.documents) {
+  //   for(DocumentSnapshot ds in qs.docs) {
   //     ids.add(ds.data[productIAPID]);
   //   }
   //   bool ava = await InAppPurchaseConnection.instance.isAvailable();

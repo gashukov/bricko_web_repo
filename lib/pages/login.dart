@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bricko_web/main.dart';
 import 'package:bricko_web/state_widget.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
 //                        Padding(
 //                          padding: EdgeInsets.only(bottom: 10.0, top: 8.0),
-//                          child: Text(FlutterI18n.translate(context, "please_sign_in"),textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 24.0),),
+//                          child: Text(translate("please_sign_in"),textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 24.0),),
 //
 //                        ),
 
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
 //                          child: TextFormField(
 //                            controller: _emailTextController,
 //                            decoration: InputDecoration(
-//                              hintText: FlutterI18n.translate(context, "email"),
+//                              hintText: translate("email"),
 //                              icon: Icon(Icons.alternate_email),
 //                            ),
 //                            validator: (value) {
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
 //                          child: TextFormField(
 //                            controller: _passwordTextController,
 //                            decoration: InputDecoration(
-//                              hintText: FlutterI18n.translate(context, "password"),
+//                              hintText: translate("password"),
 //                              icon: Icon(Icons.lock_outline),
 //                            ),
 //                            validator: (value) {
@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                       value: rememberMe,
                       onChanged: _rememberMeChanged,
                       title: Text(
-                        FlutterI18n.translate(context, "remember_me"),
+                        translate("remember_me"),
                         style: TextStyle(color: Colors.white),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
 //                            onPressed: () {},
 //                            minWidth: MediaQuery.of(context).size.width,
 //                            child: Text(
-//                              FlutterI18n.translate(context, "login"),
+//                              translate("login"),
 //                              textAlign: TextAlign.center,
 //                              style: TextStyle(
 //                                  color: Colors.white,
@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(14.0, 8.0, 14.0, 8.0),
                       child: GoogleSignInButton(
-                        text: FlutterI18n.translate(context, "google_sign_in"),
+                        text: translate("google_sign_in"),
                         onPressed: () =>
                             StateWidget.of(context).signInWithGoogle(),
                         darkMode: true,
@@ -224,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
 //                    Padding(
 //                      padding: const EdgeInsets.all(8.0),
 //                      child: Text(
-//                        FlutterI18n.translate(context, "forgot_password"),
+//                        translate("forgot_password"),
 //                        textAlign: TextAlign.center,
 //                        style: TextStyle(
 //                          color: Colors.white,
@@ -242,7 +242,7 @@ class _LoginPageState extends State<LoginPage> {
 //                            onTap: (){
 //                              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
 //                            },
-//                            child: Text(FlutterI18n.translate(context, "sign_up"), textAlign: TextAlign.center, style: TextStyle(color: Colors.red),))
+//                            child: Text(translate("sign_up"), textAlign: TextAlign.center, style: TextStyle(color: Colors.red),))
 //                    ),
                   ],
                 )),
