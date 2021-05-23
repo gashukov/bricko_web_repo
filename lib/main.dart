@@ -58,7 +58,7 @@ class AppPagesController extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print(authProvider.status.toString());
+          print("authProvider status on app start " + authProvider.status.toString());
           switch (authProvider.status) {
             case Status.Uninitialized:
               return Loading();

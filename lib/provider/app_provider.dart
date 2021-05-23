@@ -10,8 +10,10 @@ class AppProvider with ChangeNotifier {
   double revenue = 0;
 
   AppProvider.init() {
+    print("AppProvider init start");
     _getRevenue();
     changeCurrentPage(DisplayedPage.HOME);
+    print("AppProvider init ends");
   }
 
   changeCurrentPage(DisplayedPage newPage) {

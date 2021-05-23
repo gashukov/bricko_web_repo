@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:bricko_web/helpers/constants.dart';
 import 'package:bricko_web/models/user.dart';
+import 'package:bricko_web/provider/tables.dart';
 import 'package:bricko_web/services/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
@@ -26,11 +28,12 @@ class AuthProvider with ChangeNotifier {
   final formkey = GlobalKey<FormState>();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController name = TextEditingController();
+  // TextEditingController email = TextEditingController();
+  // TextEditingController password = TextEditingController();
+  // TextEditingController name = TextEditingController();
 
   AuthProvider.initialize() {
+    print("AuthProvider init start");
     _fireSetUp();
   }
 
@@ -63,6 +66,8 @@ class AuthProvider with ChangeNotifier {
       );
 
       await auth.signInWithCredential(credential).then((value) async {
+        // IdTokenResult tokenResult = await value.user.getIdTokenResult(true);
+        // tokenResult.claims
         await prefs.setString("id", value.user.uid);
       });
 
@@ -107,20 +112,20 @@ class AuthProvider with ChangeNotifier {
     return Future.delayed(Duration.zero);
   }
 
-  void clearController() {
-    name.text = "";
-    password.text = "";
-    email.text = "";
-  }
+  // void clearController() {
+  //   name.text = "";
+  //   password.text = "";
+  //   email.text = "";
+  // }
 
   Future<void> reloadUserModel() async {
     _userModel = await _userServices.getAdminById(user.uid);
     notifyListeners();
   }
 
-  updateUserData(Map<String, dynamic> data) async {
-    _userServices.updateUserData(data);
-  }
+  // updateUserData(Map<String, dynamic> data) async {
+  //   _userServices.updateUserData(data);
+  // }
 
   _onStateChanged(User firebaseUser) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

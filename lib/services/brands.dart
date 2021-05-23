@@ -12,5 +12,7 @@ class BrandsServices {
           brands.add(BrandModel.fromSnapshot(brand));
         }
         return brands;
+      }).catchError((e) {
+        print("ошибка " + e.error);
       });
 }

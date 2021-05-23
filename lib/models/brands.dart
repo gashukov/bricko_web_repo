@@ -18,5 +18,6 @@ class BrandModel {
     // _brand = snapshot.data()[BRAND];
     _titleEn = snapshot.data()[TITLE_EN];
     _titleRu = snapshot.data()[TITLE_RU];
+    print("Загружен сет " + _titleEn);
   }
 }

@@ -3,17 +3,22 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "assets/AssetManifest.json": "2efbb41d7877d10aac9d091f58ccd7b9",
-"assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
+  "assets/AssetManifest.json": "33bb838dc7ba1754f30bcb0eda5bef00",
+"assets/FontManifest.json": "226c659b9bc62ad527f9ed4e49e23bac",
 "assets/fonts/MaterialIcons-Regular.otf": "1288c9e28052e028aba623321f7826ac",
-"assets/NOTICES": "21fd77a058122d960e92b3f73fc94c58",
+"assets/NOTICES": "75c48e01cbf09edb14478b4e1045e240",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
+"assets/packages/flutter_auth_buttons/fonts/Roboto-Medium.ttf": "d08840599e05db7345652d3d417574a9",
+"assets/packages/flutter_auth_buttons/graphics/flogo-HexRBG-Wht-100.png": "5037e86e017c472bb7f66d991a97d57a",
+"assets/packages/flutter_auth_buttons/graphics/google-logo.png": "6937ba6a7d2de8aa07701225859ae402",
+"assets/packages/flutter_auth_buttons/graphics/ms-symbollockup_mssymbol_19.png": "0c29638c7558632a1a5f053d344405ba",
+"assets/packages/flutter_auth_buttons/graphics/Twitter_Logo_Blue.png": "fef946b8bba756359e2a1e87ccd915ea",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
-"index.html": "a15da6dec5ebfd59f762160a4aa72bd8",
-"/": "a15da6dec5ebfd59f762160a4aa72bd8",
-"main.dart.js": "55024825e7d8682c8e6bdfbe9e7cae98",
+"index.html": "0a46f1bf09016cdbd2aa6454b53d0d9c",
+"/": "0a46f1bf09016cdbd2aa6454b53d0d9c",
+"main.dart.js": "3ebd26dc724de9803ace13e8ecece852",
 "manifest.json": "335a47564386b4d653088b8b7baf9dc5",
 "version.json": "7874b19c01ae32b892ecb1cce8289fcf"
 };

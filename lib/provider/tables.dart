@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bricko_web/helpers/constants.dart';
 import 'package:bricko_web/models/brands.dart';
 import 'package:bricko_web/models/categories.dart';
 import 'package:bricko_web/models/orders.dart';
@@ -10,6 +11,7 @@ import 'package:bricko_web/services/categories.dart';
 import 'package:bricko_web/services/orders.dart';
 import 'package:bricko_web/services/products.dart';
 import 'package:bricko_web/services/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_table/DatatableHeader.dart';
@@ -138,14 +140,14 @@ class TablesProvider with ChangeNotifier {
 
   List<DatatableHeader> brandsTableHeader = [
     DatatableHeader(
-        text: "ID",
-        value: "id",
+        text: "Title EN",
+        value: "titleEn",
         show: true,
         sortable: true,
         textAlign: TextAlign.left),
     DatatableHeader(
-        text: "Brand",
-        value: "brand",
+        text: "Title RU",
+        value: "titleRu",
         show: true,
         flex: 2,
         sortable: true,
@@ -206,11 +208,12 @@ class TablesProvider with ChangeNotifier {
   List<BrandModel> _brands = <BrandModel>[];
 
   Future _loadFromFirebase() async {
-    _users = await _userServices.getAllUsers();
-    _orders = await _orderServices.getAllOrders();
-    _products = await _productsServices.getAllProducts();
+    print("загружаем данные таблиц с фаербейс");
+    // _users = await _userServices.getAllUsers();
+    // _orders = await _orderServices.getAllOrders();
+    // _products = await _productsServices.getAllProducts();
     _brands = await _brandsServices.getAll();
-    _categories = await _categoriesServices.getAll();
+    // _categories = await _categoriesServices.getAll();
   }
 
   List<Map<String, dynamic>> _getUsersData() {
@@ -293,15 +296,26 @@ class TablesProvider with ChangeNotifier {
   _initData() async {
     isLoading = true;
     notifyListeners();
-    await _loadFromFirebase();
-    usersTableSource.addAll(_getUsersData());
-    ordersTableSource.addAll(_getOrdersData());
-    productsTableSource.addAll(_getProductsData());
-    categoriesTableSource.addAll(_getCategoriesData());
-    brandsTableSource.addAll(_getBrandsData());
 
-    isLoading = false;
-    notifyListeners();
+    await initialization.then((value) {
+      auth.authStateChanges().listen(_onStateChanged);
+    });
+  }
+
+  _onStateChanged(User firebaseUser) async {
+    //todo проверка че за юзер
+    print("состояние изменено user " + firebaseUser.email);
+    if (firebaseUser.email == "mashukovg@gmail.com") {
+      await _loadFromFirebase();
+      // usersTableSource.addAll(_getUsersData());
+      // ordersTableSource.addAll(_getOrdersData());
+      // productsTableSource.addAll(_getProductsData());
+      // categoriesTableSource.addAll(_getCategoriesData());
+      brandsTableSource.addAll(_getBrandsData());
+
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
   onSort(dynamic value) {
@@ -352,6 +366,8 @@ class TablesProvider with ChangeNotifier {
   }
 
   TablesProvider.init() {
+    print("TablesProvider init start");
+
     _initData();
   }
 }

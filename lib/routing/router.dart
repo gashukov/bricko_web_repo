@@ -25,8 +25,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(OrdersPage());
     case LoginRoute:
       return _getPageRoute(LoginPage());
-    case RegistrationRoute:
-      return _getPageRoute(RegistrationPage());
+    // case RegistrationRoute:
+    //   return _getPageRoute(RegistrationPage());
     case LayoutRoute:
       return _getPageRoute(LayoutTemplate());
     case CategoriesRoute:
