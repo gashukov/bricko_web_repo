@@ -14,6 +14,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:bricko_web/utils/firebase_storage_image.dart';
 
+import '../constants.dart';
+
 class Products extends StatefulWidget {
   @override
   _ProductsState createState() => _ProductsState();
@@ -84,28 +86,84 @@ class _ProductsState extends State<Products> {
                 ),
               );
             } else {
-              return new StaggeredGridView.countBuilder(
-                  crossAxisCount: 6,
-                  itemCount: productList.length,
-                  staggeredTileBuilder: (int index) =>
-                      new StaggeredTile.count(1, 1.24),
-                  mainAxisSpacing: 12.0,
-                  crossAxisSpacing: 12.0,
-                  itemBuilder: (BuildContext context, int index) {
-                    print("билдим " + productList[index].id);
-                    return SingleProduct(new ProductData(
-                        productList[index].id.replaceAll(" ", ""),
-                        productList[index].data()[productPriceType],
-                        productList[index].data()[productAdsPrice],
-                        productList[index].data()[productTitleEN],
-                        productList[index].data()[productTitleRU],
-                        productList[index].data()[productDescriptionEN],
-                        productList[index].data()[productDescriptionRU],
-                        productList[index].data()[productScreensCount],
-                        productList[index].data()[productCategories],
-                        productList[index].data()[productSet],
-                        productList[index].data()[productIAPID]));
-                  });
+              return Container(
+                padding: EdgeInsets.all(defaultPadding),
+                decoration: BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Инструкции",
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: DataTable(
+                        horizontalMargin: 0,
+                        columnSpacing: defaultPadding,
+                        // dataRowHeight: 100,
+                        columns: [
+                          DataColumn(
+                            label: Text("Название"),
+                          ),
+                          DataColumn(
+                            label: Text("Категория"),
+                          ),
+                          DataColumn(
+                            label: Text("Набор"),
+                          ),
+                        ],
+                        rows: List.generate(
+                          productList.length,
+                          (index) => singleProductRow(
+                              new ProductData(
+                                  productList[index].id.replaceAll(" ", ""),
+                                  productList[index].data()[productPriceType],
+                                  productList[index].data()[productAdsPrice],
+                                  productList[index].data()[productTitleEN],
+                                  productList[index].data()[productTitleRU],
+                                  productList[index]
+                                      .data()[productDescriptionEN],
+                                  productList[index]
+                                      .data()[productDescriptionRU],
+                                  productList[index]
+                                      .data()[productScreensCount],
+                                  productList[index].data()[productCategories],
+                                  productList[index].data()[productSet],
+                                  productList[index].data()[productIAPID]),
+                              context),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+
+              // return new StaggeredGridView.countBuilder(
+              //     crossAxisCount: 6,
+              //     itemCount: productList.length,
+              //     staggeredTileBuilder: (int index) =>
+              //         new StaggeredTile.count(1, 1.24),
+              //     mainAxisSpacing: 12.0,
+              //     crossAxisSpacing: 12.0,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       print("билдим " + productList[index].id);
+              //       return SingleProduct(new ProductData(
+              //           productList[index].id.replaceAll(" ", ""),
+              //           productList[index].data()[productPriceType],
+              //           productList[index].data()[productAdsPrice],
+              //           productList[index].data()[productTitleEN],
+              //           productList[index].data()[productTitleRU],
+              //           productList[index].data()[productDescriptionEN],
+              //           productList[index].data()[productDescriptionRU],
+              //           productList[index].data()[productScreensCount],
+              //           productList[index].data()[productCategories],
+              //           productList[index].data()[productSet],
+              //           productList[index].data()[productIAPID]));
+              //     });
             }
           }
         });
@@ -184,6 +242,34 @@ class _ProductsState extends State<Products> {
   }
 }
 
+DataRow singleProductRow(ProductData productData, BuildContext context) {
+  return DataRow(
+    cells: [
+      DataCell(
+        Row(
+          children: [
+            Image(
+              image: FirebaseImage(
+                'gs://bricko.appspot.com' + getIconPathByPID(productData.pID),
+                shouldCache: false,
+                firebaseApp: FirebaseFirestore.instance.app,
+              ),
+              width: 100,
+              height: 100,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+              child: Text(productData.getActualTitle(context)),
+            ),
+          ],
+        ),
+      ),
+      DataCell(Text(productData.pCategories[0].toString())),
+      DataCell(Text(productData.pSet.toString())),
+    ],
+  );
+}
+
 class SingleProduct extends StatefulWidget {
   ProductData productData;
   SingleProduct(this.productData);
@@ -235,11 +321,11 @@ class _SingleProductState extends State<SingleProduct> {
                   // ),
                   child: Image(
                     image: FirebaseImage(
-                      'gs://bricko.appspot.com' +
-                          getIconPathByPID(widget.productData.pID),
-                      shouldCache: false,
-                      firebaseApp: FirebaseFirestore.instance.app,
-                    ),
+                        'gs://bricko.appspot.com' +
+                            getIconPathByPID(widget.productData.pID),
+                        shouldCache: true,
+                        firebaseApp: FirebaseFirestore.instance.app,
+                        cacheRefreshStrategy: CacheRefreshStrategy.NEVER),
                     width: double.maxFinite,
                     fit: BoxFit.fitWidth,
                   ),

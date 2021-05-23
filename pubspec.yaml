@@ -54,6 +54,7 @@ dependencies:
     git:
       url: git://github.com/blinkin/firebase_image.git
       ref: issue37_fix
+  google_fonts: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
