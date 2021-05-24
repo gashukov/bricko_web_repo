@@ -22,8 +22,6 @@ class Products extends StatefulWidget {
 
   String category;
   String set;
-  final Stream<QuerySnapshot> productStream =
-      FirebaseFirestore.instance.collection(productsRoot).snapshots();
 
   Products(this.set, this.category);
 }
@@ -31,8 +29,8 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: widget.productStream,
+    return new StreamBuilder(
+        stream: FirebaseFirestore.instance.collection(productsRoot).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return new Center(
