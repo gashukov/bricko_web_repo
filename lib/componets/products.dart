@@ -115,6 +115,12 @@ class _ProductsState extends State<Products> {
                           DataColumn(
                             label: Text("Набор"),
                           ),
+                          DataColumn(
+                            label: Text(""),
+                          ),
+                          // DataColumn(
+                          //   label: Text(""),
+                          // ),
                         ],
                         rows: List.generate(
                           productList.length,
@@ -266,6 +272,25 @@ DataRow singleProductRow(ProductData productData, BuildContext context) {
       ),
       DataCell(Text(productData.pCategories[0].toString())),
       DataCell(Text(productData.pSet.toString())),
+      DataCell(Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+            child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(primary: Colors.green),
+                onPressed: () {},
+                icon: Icon(Icons.edit),
+                label: Text("Изменить")),
+          ),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+              child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(primary: Colors.redAccent),
+                  onPressed: () {},
+                  icon: Icon(Icons.delete),
+                  label: Text("Удалить"))),
+        ],
+      )),
     ],
   );
 }
