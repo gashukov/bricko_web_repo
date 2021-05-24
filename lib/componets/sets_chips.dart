@@ -1,3 +1,4 @@
+import 'package:bricko_web/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bricko_web/pages/product_details.dart';
@@ -44,7 +45,7 @@ class SetsChips extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: ActionChip(
                         pressElevation: 2,
-                        backgroundColor: Colors.white,
+                        backgroundColor: secondaryColor,
                         elevation: 4.0,
                         onPressed: () {
 //                          setCategory((snapshot.data.docs[index] as DocumentSnapshot).documentID);
