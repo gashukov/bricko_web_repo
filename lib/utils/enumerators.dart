@@ -1,1 +1,1 @@
-enum DisplayedPage { HOME, PRODUCTS, ORDERS, USERS, BRANDS, CATEGORIES }
+enum DisplayedPage { HOME, SETS, USERS, CATEGORIES }

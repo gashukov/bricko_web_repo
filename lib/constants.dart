@@ -5,3 +5,11 @@ const secondaryColor = Color(0xFF2A2D3E);
 const bgColor = Color(0xFF212332);
 
 const defaultPadding = 16.0;
+
+const String HomeRoute = "home";
+const String LayoutRoute = "layout";
+const String UsersRoute = "users";
+const String LoginRoute = "login";
+const String CategoriesRoute = "categories";
+const String SetsRoute = "sets";
+const String PageControllerRoute = "page";

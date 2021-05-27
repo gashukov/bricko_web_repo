@@ -254,14 +254,17 @@ DataRow singleProductRow(ProductData productData, BuildContext context) {
       DataCell(
         Row(
           children: [
-            Image(
-              image: FirebaseImage(
-                'gs://bricko.appspot.com' + getIconPathByPID(productData.pID),
-                shouldCache: false,
-                firebaseApp: FirebaseFirestore.instance.app,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Image(
+                image: FirebaseImage(
+                  'gs://bricko.appspot.com' + getIconPathByPID(productData.pID),
+                  shouldCache: false,
+                  firebaseApp: FirebaseFirestore.instance.app,
+                ),
+                width: 100,
+                height: 100,
               ),
-              width: 100,
-              height: 100,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultPadding),

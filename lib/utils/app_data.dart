@@ -1,4 +1,3 @@
-
 //roots prefs
 const String productsRoot = "products";
 const String categoriesRoot = "categories";
@@ -20,14 +19,15 @@ const String productSet = "productSet";
 const String productIAPID = "iapID";
 const String productActive = "productActive";
 
+// sets details prefx
+const String setTitleEN = "title_en";
+const String setTitleRU = "title_ru";
+
 //price types prefs
 const String priceTypeFree = "free";
 const String priceTypePaid = "paid";
 const String priceTypeAds = "ads";
 
-
 int adsDelaySeconds = 60;
 
-enum ButtonBuyState {
-  OPEN, DOWNLOAD, UNLOCK, BUY
-}
+enum ButtonBuyState { OPEN, DOWNLOAD, UNLOCK, BUY }

@@ -43,7 +43,6 @@ class _StateWidgetState extends State<StateWidget> {
   StateModel state;
   GoogleSignInAccount googleUser;
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -121,8 +120,7 @@ class _StateWidgetState extends State<StateWidget> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    UserCredential userCredential =
-        await _auth.signInWithCredential(credential);
+    UserCredential userCredential = await auth.signInWithCredential(credential);
     print("дебаг: дождались signInWithCredential");
 
 //    dataStorage.preferences.setBool(logOutPref, false);
@@ -256,7 +254,7 @@ class _StateWidgetState extends State<StateWidget> {
       state.isLoading = true;
       state.user = null;
     });
-    await _auth.signOut();
+    await auth.signOut();
     googleUser = null;
     await _googleSignIn.signOut();
 
