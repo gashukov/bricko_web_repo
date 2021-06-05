@@ -1,4 +1,5 @@
 import 'package:bricko_web/utils/locator.dart';
+import 'package:bricko_web/utils/streams.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -40,6 +41,8 @@ void main() async {
 
   await initialization;
   // purchaseManager = new PurchaseManager();
+
+  StreamsUtil.initStreams();
 
   initApp();
 }

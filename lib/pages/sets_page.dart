@@ -108,8 +108,8 @@ class _SetsPageState extends State<SetsPage> {
                           setsList.length,
                           (index) => singleSetsRow(
                               setsList[index].id.replaceAll(" ", ""),
-                              setsList[index].data()[setTitleRU],
-                              setsList[index].data()[setTitleEN]),
+                              setsList[index].data()[setCatTitleRU],
+                              setsList[index].data()[setCatTitleEN]),
                         ),
                       ),
                     ),

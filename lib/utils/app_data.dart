@@ -20,8 +20,9 @@ const String productIAPID = "iapID";
 const String productActive = "productActive";
 
 // sets details prefx
-const String setTitleEN = "title_en";
-const String setTitleRU = "title_ru";
+const String setCatTitleEN = "title_en";
+const String setCatTitleRU = "title_ru";
+const String setCatTitle = "title_";
 
 //price types prefs
 const String priceTypeFree = "free";

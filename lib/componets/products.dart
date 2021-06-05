@@ -1,4 +1,8 @@
 import 'package:bricko_web/state_widget.dart';
+import 'package:bricko_web/utils/AppProvider.dart';
+import 'package:bricko_web/utils/enumerators.dart';
+import 'package:bricko_web/utils/locator.dart';
+import 'package:bricko_web/utils/navigation_service.dart';
 import 'package:firebase_image/firebase_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +17,10 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:bricko_web/utils/firebase_storage_image.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
+import '../responsive.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -29,150 +35,200 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
+    final AppProvider appProvider = Provider.of<AppProvider>(context);
     return new StreamBuilder(
-        stream: FirebaseFirestore.instance.collection(productsRoot).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return new Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor),
-              ),
-            );
-          } else {
-            // List<String> localOwned = snapshotuser.data["owned"] == null ? null : List.from(snapshotuser.data["owned"]);
-            // if(localOwned != null) {
-            //   localOwned.forEach((e) => print("LOCAL OWNED ${e}"));
-            // }
+      stream: FirebaseFirestore.instance.collection(categoriesRoot).snapshots(),
+      builder: (context, snapshotCat) {
+        return new StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection(productsRoot).snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return new Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor),
+                  ),
+                );
+              } else {
+                // List<String> localOwned = snapshotuser.data["owned"] == null ? null : List.from(snapshotuser.data["owned"]);
+                // if(localOwned != null) {
+                //   localOwned.forEach((e) => print("LOCAL OWNED ${e}"));
+                // }
+                List<DocumentSnapshot> productList = snapshot.data.docs;
+                List<DocumentSnapshot> categoriesList = snapshotCat.data.docs;
 
-            List<DocumentSnapshot> productList = snapshot.data.docs;
+                print("CHECK OWNED");
+                // todo заменить на локальную проверку
+                // productList.removeWhere((DocumentSnapshot d) => !(d[productActive] || localOwned != null && localOwned.contains(d.id.replaceAll(" ", ""))));
+                productList
+                    .removeWhere((DocumentSnapshot d) => !d[productActive]);
+                // if (widget.set != null) {
+                //   productList = productList
+                //       .where((DocumentSnapshot d) =>
+                //           d[productSet].toString() == widget.set)
+                //       .toList();
+                // }
+                // if (widget.category != null) {
+                //   productList = productList
+                //       .where((DocumentSnapshot d) =>
+                //           (d[productCategories] as List<dynamic>)
+                //               .contains(widget.category))
+                //       .toList();
+                // }
 
-            print("CHECK OWNED");
-            // todo заменить на локальную проверку
-            // productList.removeWhere((DocumentSnapshot d) => !(d[productActive] || localOwned != null && localOwned.contains(d.id.replaceAll(" ", ""))));
-            productList.removeWhere((DocumentSnapshot d) => !d[productActive]);
-            if (widget.set != null) {
-              productList = productList
-                  .where((DocumentSnapshot d) =>
-                      d[productSet].toString() == widget.set)
-                  .toList();
-            }
-            if (widget.category != null) {
-              productList = productList
-                  .where((DocumentSnapshot d) =>
-                      (d[productCategories] as List<dynamic>)
-                          .contains(widget.category))
-                  .toList();
-            }
-
-            if (productList.length == 0) {
-              return new Center(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    new Icon(
-                      Icons.find_in_page,
-                      color: Colors.black45,
-                      size: 80.0,
-                    ),
-                    new Text(
-                      translate("no_instructions"),
-                      style: new TextStyle(
-                        color: Colors.black45,
-                        fontSize: 20,
-                      ),
-                    )
-                  ],
-                ),
-              );
-            } else {
-              return Container(
-                padding: EdgeInsets.all(defaultPadding),
-                decoration: BoxDecoration(
-                  color: secondaryColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Инструкции",
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: DataTable(
-                        horizontalMargin: 0,
-                        columnSpacing: defaultPadding,
-                        // dataRowHeight: 100,
-                        columns: [
-                          DataColumn(
-                            label: Text("Название"),
-                          ),
-                          DataColumn(
-                            label: Text("Категория"),
-                          ),
-                          DataColumn(
-                            label: Text("Набор"),
-                          ),
-                          DataColumn(
-                            label: Text(""),
-                          ),
-                          // DataColumn(
-                          //   label: Text(""),
-                          // ),
-                        ],
-                        rows: List.generate(
-                          productList.length,
-                          (index) => singleProductRow(
-                              new ProductData(
-                                  productList[index].id.replaceAll(" ", ""),
-                                  productList[index].data()[productPriceType],
-                                  productList[index].data()[productAdsPrice],
-                                  productList[index].data()[productTitleEN],
-                                  productList[index].data()[productTitleRU],
-                                  productList[index]
-                                      .data()[productDescriptionEN],
-                                  productList[index]
-                                      .data()[productDescriptionRU],
-                                  productList[index]
-                                      .data()[productScreensCount],
-                                  productList[index].data()[productCategories],
-                                  productList[index].data()[productSet],
-                                  productList[index].data()[productIAPID]),
-                              context),
+                if (productList.length == 0) {
+                  return new Center(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Icon(
+                          Icons.find_in_page,
+                          color: Colors.black45,
+                          size: 80.0,
                         ),
-                      ),
+                        new Text(
+                          translate("no_instructions"),
+                          style: new TextStyle(
+                            color: Colors.black45,
+                            fontSize: 20,
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
-              );
-
-              // return new StaggeredGridView.countBuilder(
-              //     crossAxisCount: 6,
-              //     itemCount: productList.length,
-              //     staggeredTileBuilder: (int index) =>
-              //         new StaggeredTile.count(1, 1.24),
-              //     mainAxisSpacing: 12.0,
-              //     crossAxisSpacing: 12.0,
-              //     itemBuilder: (BuildContext context, int index) {
-              //       print("билдим " + productList[index].id);
-              //       return SingleProduct(new ProductData(
-              //           productList[index].id.replaceAll(" ", ""),
-              //           productList[index].data()[productPriceType],
-              //           productList[index].data()[productAdsPrice],
-              //           productList[index].data()[productTitleEN],
-              //           productList[index].data()[productTitleRU],
-              //           productList[index].data()[productDescriptionEN],
-              //           productList[index].data()[productDescriptionRU],
-              //           productList[index].data()[productScreensCount],
-              //           productList[index].data()[productCategories],
-              //           productList[index].data()[productSet],
-              //           productList[index].data()[productIAPID]));
-              //     });
-            }
-          }
-        });
+                  );
+                } else {
+                  return Container(
+                    padding: EdgeInsets.all(defaultPadding),
+                    decoration: BoxDecoration(
+                      color: secondaryColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Инструкции",
+                              style: Theme.of(context).textTheme.subtitle1,
+                            ),
+                            Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                  width: 120, height: 45),
+                              child: ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.green),
+                                  onPressed: () {
+                                    appProvider.changeCurrentPage(
+                                        DisplayedPage.ADDCATEGORY);
+                                    locator<NavigationService>()
+                                        .navigateTo(AddCategoryRoute);
+                                  },
+                                  icon: Icon(Icons.add),
+                                  label: Text("Создать")),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: DataTable(
+                            horizontalMargin: 0,
+                            columnSpacing: defaultPadding,
+                            // dataRowHeight: 100,
+                            columns: [
+                              DataColumn(
+                                label: Text("Название"),
+                              ),
+                              DataColumn(
+                                label: Text("Категория"),
+                              ),
+                              DataColumn(
+                                label: Text("Набор"),
+                              ),
+                              DataColumn(
+                                label: Text(""),
+                              ),
+                              // DataColumn(
+                              //   label: Text(""),
+                              // ),
+                            ],
+                            rows: List.generate(
+                              productList.length,
+                              (index) => singleProductRow(
+                                  new ProductData(
+                                      productList[index].id.replaceAll(" ", ""),
+                                      productList[index]
+                                          .data()[productPriceType],
+                                      productList[index]
+                                          .data()[productAdsPrice],
+                                      productList[index].data()[productTitleEN],
+                                      productList[index].data()[productTitleRU],
+                                      productList[index]
+                                          .data()[productDescriptionEN],
+                                      productList[index]
+                                          .data()[productDescriptionRU],
+                                      productList[index]
+                                          .data()[productScreensCount],
+                                      productList[index]
+                                          .data()[productCategories],
+                                      productList[index].data()[productSet],
+                                      productList[index].data()[productIAPID]),
+                                  categoriesList,
+                                  context),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Container(
+                            //   padding: EdgeInsets.symmetric(horizontal: 15),
+                            //   child: Text("Rows per page:"),
+                            // ),
+                            // if (tablesProvider.perPages != null)
+                            //   Container(
+                            //     padding: EdgeInsets.symmetric(horizontal: 15),
+                            //     child: DropdownButton(
+                            //         value: tablesProvider.currentPerPage,
+                            //         items: tablesProvider.perPages
+                            //             .map((e) => DropdownMenuItem(
+                            //                   child: Text("$e"),
+                            //                   value: e,
+                            //                 ))
+                            //             .toList(),
+                            //         onChanged: (value) {}),
+                            //   ),
+                            // Container(
+                            //   padding: EdgeInsets.symmetric(horizontal: 15),
+                            //   child: Text(
+                            //       "${tablesProvider.currentPage} - ${tablesProvider.currentPage} of ${tablesProvider.total}"),
+                            // ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                size: 16,
+                              ),
+                              onPressed: () {},
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                            ),
+                            Text("1"),
+                            IconButton(
+                              icon: Icon(Icons.arrow_forward_ios, size: 16),
+                              onPressed: () {},
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                }
+              }
+            });
+      },
+    );
 
 //    return new StreamBuilder(
 //        stream: firestore.collection(productsRoot).snapshots(),
@@ -248,7 +304,8 @@ class _ProductsState extends State<Products> {
   }
 }
 
-DataRow singleProductRow(ProductData productData, BuildContext context) {
+DataRow singleProductRow(ProductData productData,
+    List<DocumentSnapshot> categoriesList, BuildContext context) {
   return DataRow(
     cells: [
       DataCell(
@@ -273,20 +330,23 @@ DataRow singleProductRow(ProductData productData, BuildContext context) {
           ],
         ),
       ),
-      DataCell(Text(productData.pCategories[0].toString())),
+      DataCell(Text(categoriesList
+          .firstWhere(
+              (element) => element.id == productData.pCategories[0].toString())
+          .data()["title_ru"])),
       DataCell(Text(productData.pSet.toString())),
       DataCell(Row(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(primary: Colors.green),
+                style: ElevatedButton.styleFrom(primary: primaryColor),
                 onPressed: () {},
                 icon: Icon(Icons.edit),
                 label: Text("Изменить")),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(primary: Colors.redAccent),
                   onPressed: () {},

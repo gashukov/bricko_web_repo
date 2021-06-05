@@ -1,6 +1,7 @@
 import 'package:bricko_web/pages/home.dart';
 import 'package:bricko_web/pages/layout.dart';
 import 'package:bricko_web/pages/login.dart';
+import 'package:bricko_web/pages/new_product_page.dart';
 import 'package:bricko_web/pages/sets_page.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(SetsPage());
     case PageControllerRoute:
       return _getPageRoute(AppPagesController());
+    case AddCategoryRoute:
+      return _getPageRoute(AddProductForm());
     default:
       return _getPageRoute(HomePage());
   }

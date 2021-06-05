@@ -55,6 +55,7 @@ dependencies:
       url: git://github.com/blinkin/firebase_image.git
       ref: issue37_fix
   google_fonts: ^2.0.0
+  flutter_form_builder: ^6.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -86,6 +87,7 @@ flutter:
     - images/logo.png
     - images/google.png
     - images/g-logo.png
+    - images/unnamed.jpg
     - assets/i18n/
 
   # An image asset can refer to one or more resolution-specific "variants", see

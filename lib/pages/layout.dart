@@ -161,13 +161,13 @@ class _LayoutTemplateState extends State<LayoutTemplate> {
             UserAccountsDrawerHeader(
               accountName: appState.user != null
                   ? Text(appState.user.displayName)
-                  : Text("user@email.com"),
+                  : Text("mashukovg@gmail.com"),
               currentAccountPicture: GestureDetector(
                 child: new CircleAvatar(
                   // backgroundColor: Colors.grey,
                   backgroundImage: appState.user != null
                       ? NetworkImage(appState.user.photoURL)
-                      : null,
+                      : Image.asset('images/unnamed.jpg').image,
                 ),
               ),
               decoration: new BoxDecoration(color: secondaryColor),
