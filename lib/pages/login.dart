@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Image.asset(
             'images/back.jpg',
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
 //          ),
           Padding(
 //            padding: const EdgeInsets.only(top: 180.0), //вернуть это значение
-            padding: const EdgeInsets.only(top: 90),
+            padding: const EdgeInsets.only(top: 100),
             child: Form(
                 key: _formKey,
                 child: ListView(
@@ -150,17 +150,24 @@ class _LoginPageState extends State<LoginPage> {
                             height: 200.0,
                           )),
                     ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.25,
+                    ),
 
                     ///remember me
-                    new CheckboxListTile(
-                      value: rememberMe,
-                      onChanged: _rememberMeChanged,
-                      title: Text(
-                        translate("remember_me"),
-                        style: TextStyle(color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.4),
+                      child: new CheckboxListTile(
+                        value: rememberMe,
+                        onChanged: _rememberMeChanged,
+                        title: Text(
+                          translate("remember_me"),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        activeColor: Colors.red.shade900,
                       ),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      activeColor: Colors.red.shade900,
                     ),
 
 //                    Padding(
@@ -212,7 +219,8 @@ class _LoginPageState extends State<LoginPage> {
 
                     /// google sign in
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(14.0, 8.0, 14.0, 8.0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.4),
                       child: GoogleSignInButton(
                         text: translate("google_sign_in"),
                         onPressed: () =>

@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     print("хоум билдится");
+    
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             // new SetsChips(),
-            Header(),
+            Header("Панель администратора", true),
             SizedBox(height: defaultPadding),
             Products(null, null),
           ],

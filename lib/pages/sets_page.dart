@@ -24,7 +24,7 @@ class _SetsPageState extends State<SetsPage> {
         child: Column(
           children: [
             // new SetsChips(),
-            Header(),
+            Header("Панель администратора", true),
             SizedBox(height: defaultPadding),
             setsWidget(),
           ],

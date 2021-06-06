@@ -4,21 +4,22 @@ import '../constants.dart';
 import '../responsive.dart';
 
 class Header extends StatelessWidget {
-  const Header({
-    Key key,
-  }) : super(key: key);
+  String title;
+  bool search;
+
+  Header(String this.title, bool this.search, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Text(
-          "Bricko - Панель администратора",
+          title,
           style: Theme.of(context).textTheme.headline6,
         ),
 
         Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-        Expanded(child: SearchField()),
+        Expanded(child: search ? SearchField()  : SizedBox()),
         // ProfileCard()
       ],
     );

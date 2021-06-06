@@ -17,6 +17,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:bricko_web/utils/firebase_storage_image.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -58,11 +59,12 @@ class _ProductsState extends State<Products> {
                 List<DocumentSnapshot> productList = snapshot.data.docs;
                 List<DocumentSnapshot> categoriesList = snapshotCat.data.docs;
 
-                print("CHECK OWNED");
+                // print("CHECK OWNED");
                 // todo заменить на локальную проверку
-                // productList.removeWhere((DocumentSnapshot d) => !(d[productActive] || localOwned != null && localOwned.contains(d.id.replaceAll(" ", ""))));
-                productList
-                    .removeWhere((DocumentSnapshot d) => !d[productActive]);
+                // productList
+                //     .removeWhere((DocumentSnapshot d) => !(d[productActive]));
+                // productList
+                //     .removeWhere((DocumentSnapshot d) => !d[productActive]);
                 // if (widget.set != null) {
                 //   productList = productList
                 //       .where((DocumentSnapshot d) =>
@@ -349,7 +351,33 @@ DataRow singleProductRow(ProductData productData,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(primary: Colors.redAccent),
-                  onPressed: () {},
+                  onPressed: () {
+                    Widget toast = Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 12.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: Colors.green,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.check),
+                          SizedBox(
+                            width: 12.0,
+                          ),
+                          Text("Инструкция успешно добавлена!"),
+                        ],
+                      ),
+                    );
+                    FToast fToast = FToast();
+                    fToast.init(context);
+                    fToast.showToast(
+                      child: toast,
+                      toastDuration: Duration(seconds: 2),
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  },
                   icon: Icon(Icons.delete),
                   label: Text("Удалить"))),
         ],

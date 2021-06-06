@@ -3,6 +3,7 @@ import 'package:bricko_web/utils/AppProvider.dart';
 import 'package:bricko_web/utils/router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +29,7 @@ class BricksBuildInstructionsApp extends StatelessWidget {
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
+            FormBuilderLocalizations.delegate,
             localizationDelegate
           ],
           supportedLocales: localizationDelegate.supportedLocales,
@@ -73,11 +75,11 @@ class AppPagesController extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          // if (auth.currentUser == null) {
-          //   return LoginPage();
-          // } else {
-          return LayoutTemplate();
-          // }
+          if (auth.currentUser == null) {
+            return LoginPage();
+          } else {
+            return LayoutTemplate();
+          }
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
