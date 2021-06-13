@@ -1,5 +1,6 @@
 import 'package:bricko_web/componets/DrawerListTile.dart';
 import 'package:bricko_web/models/state.dart';
+import 'package:bricko_web/pages/login.dart';
 import 'package:bricko_web/utils/AppProvider.dart';
 import 'package:bricko_web/utils/enumerators.dart';
 import 'package:bricko_web/utils/locator.dart';
@@ -73,10 +74,10 @@ class _LayoutTemplateState extends State<LayoutTemplate> {
         body: _buildLoadingIndicator(primaryColor),
       );
     }
-    // else if (!appState.isLoading && appState.user == null) {
-    //   print("билдим логин паге");
-    //   return new LoginPage();
-    // }
+    else if (!appState.isLoading && appState.user == null) {
+      print("билдим логин паге");
+      return new LoginPage();
+    }
     else {
       print("билдим лэйаут");
       return _buildMainContent();

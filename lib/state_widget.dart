@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -120,18 +121,44 @@ class _StateWidgetState extends State<StateWidget> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    UserCredential userCredential = await auth.signInWithCredential(credential);
-    print("дебаг: дождались signInWithCredential");
 
-//    dataStorage.preferences.setBool(logOutPref, false);
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.green,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("Вход невозможен, вы не являетесь администратором!"),
+        ],
+      ),
+    );
+    FToast fToast = FToast();
+    fToast.init(context);
+    fToast.showToast(
+      child: toast,
+      toastDuration: Duration(seconds: 2),
+      gravity: ToastGravity.BOTTOM,
+    );
+
+    // UserCredential userCredential = await auth.signInWithCredential(credential);
+    // print("дебаг: дождались signInWithCredential");
+
+    //  dataStorage.preferences.setBool(logOutPref, false);
 
     // await updateUserData(userCredential.user); //todo закомментил для теста
     // await onLogIn(userCredential.user);
 
-    setState(() {
-      state.isLoading = false;
-      state.user = userCredential.user;
-    });
+    // setState(() {
+    //   state.isLoading = false;
+    //   state.user = userCredential.user;
+    // });
   }
 
 //   Future updateUserData(User user) async {
